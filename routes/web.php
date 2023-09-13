@@ -14,5 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    // echo env('APP_ENV'); // Lấy dữ liệu trong file .env
+    echo config('app.url'); // Lấy dữ liệu trong folder config config('ten_file.key')
     return view('welcome');
 });
