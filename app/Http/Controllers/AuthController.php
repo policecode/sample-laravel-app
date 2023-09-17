@@ -17,11 +17,13 @@ class AuthController extends Controller
             'name' => 'required',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|confirmed|min:6',
+            'group_id' => 'required'
 
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
+    
         $user = User::create(array_merge(
             $validator->validated(),
             ['password' => bcrypt($request->password)]
