@@ -21,7 +21,7 @@ class CreateCategoriesTable extends Migration
                 $table->text('description')->nullable();
                 $table->integer('parent')->default(0);
                 $table->tinyInteger('group');
-                $table->mediumInteger('count');
+                $table->mediumInteger('count')->default(0);
             });
         }
     }

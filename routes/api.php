@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -23,5 +24,8 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function($router) {
     Route::get('profile', [AuthController::class, 'profile']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
+});
 
+Route::group(['middleware' => 'api', 'prefix' => 'admin'], function($router) {
+    Route::apiResource('categories', CategoryController::class);
 });
