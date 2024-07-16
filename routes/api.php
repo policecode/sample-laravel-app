@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CustomerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -26,6 +27,9 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function($router) {
     Route::post('refresh', [AuthController::class, 'refresh']);
 });
 
-Route::group(['middleware' => 'api', 'prefix' => 'admin'], function($router) {
+Route::group(['middleware' => ['api'], 'prefix' => 'admin'], function($router) {
+    Route::apiResource('customers', CustomerController::class);
+    Route::post('customers/store_list', [CustomerController::class, 'storeList'])->name('customers.store_list');
     Route::apiResource('categories', CategoryController::class);
+
 });

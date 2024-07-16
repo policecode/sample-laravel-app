@@ -4,8 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Traits\Filterable;
 class Customer extends Model
 {
-    use HasFactory;
+    use HasFactory, Filterable;
+    protected $fillable = [
+        'name', 'gender', 'country', 'birthday', 'passport', 'passport_expiration', 'album'
+    ];
+
+    public $filterFields  = [];
+    public $filterKeywords = [];
 }
