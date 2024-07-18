@@ -13,7 +13,7 @@ class UpdateCategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,30 @@ class UpdateCategoryRequest extends FormRequest
      */
     public function rules()
     {
+        $category = $this->route()->category;
         return [
-            //
+            'name' => ['required', 'string', 'unique:categories,name,'.$category->id],
+            'slug' => ['required', 'string', 'unique:categories,slug,'.$category->id],
+            'description' => '',
+            'parent' => '',
+            'group' => ['required'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'required' => 'Trường :attribute bắt buộc phải nhập',
+            'string' => 'Trường :attribute phải là chuôi',
+            'unique' => 'Dữ liệu đã tồn tại'
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'name' => 'Tên trường',
+            'slug' => 'Đường dẫn động'
         ];
     }
 }

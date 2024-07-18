@@ -26,7 +26,7 @@ class StoreCustomerRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:150'],
             'gender' => [Rule::in(['male', 'female', 'unknown'])],
-            'country' => '',
+            'country' => ['required'],
             'birthday' => ['date'],
             'passport' => ['required', 'unique:customers,passport'],
             'passport_expiration' => '',

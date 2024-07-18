@@ -13,9 +13,8 @@ trait Filterable {
         $filters = is_array($request) ? $request : $request->all();
         $isPaginate = isset($filters['is_paginate']) ? (int) $filters['is_paginate'] : 1;
         unset($filters['is_paginate']);
-
         $page = isset($filters['page']) && (int) $filters['page'] ? (int) $filters['page'] : 1;
-        $perPage = $filters['per_page'] ? (int) $filters['per_page'] : 20;
+        $perPage = isset($filters['per_page']) ? (int) $filters['per_page'] : 20;
         unset($filters['page']);
         unset($filters['per_page']);
         $this->per_page = $perPage;

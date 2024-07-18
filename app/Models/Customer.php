@@ -12,6 +12,7 @@ class Customer extends Model
         'name', 'gender', 'country', 'birthday', 'passport', 'passport_expiration', 'album'
     ];
 
-    public $filterFields  = [];
-    public $filterKeywords = [];
+    public $filterFields  = ['gender', 'country'];
+    public $filterKeywords = ['name', 'passport'];
+    public $filterTextFields = ['name', 'passport'];
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Validation\Rule;
 class UpdateCustomerRequest extends FormRequest
 {
     /**
@@ -13,7 +13,7 @@ class UpdateCustomerRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,38 @@ class UpdateCustomerRequest extends FormRequest
      */
     public function rules()
     {
+        $customer = $this->route()->customer;
         return [
-            //
+            'name' => ['required', 'string', 'max:150'],
+            'gender' => [Rule::in(['male', 'female', 'unknown'])],
+            'country' => ['required'],
+            'birthday' => ['date'],
+            'passport' => ['required', 'unique:customers,passport,'.$customer->id],
+            'passport_expiration' => '',
+            'album' => ''
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'required' => 'Trường :attribute bắt buộc phải nhập',
+            'string' => 'Trường :attribute phải là chuỗi',
+            'in' => ':attribute không đúng giá trị mặc định',
+            'unique' => ':attribute đã tồn tại',
+            'date' => ':attribute không đúng định dạng',
+            'max' => ':attribute không được nhiều hơn :max ký tự',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'name' => 'Tên người nước ngoài',
+            'gender' => 'Giới tính',
+            'slug' => 'Đường dẫn động',
+            'birthday' => 'Ngày, tháng, năm sinh',
+            'passport' => 'Hộ chiếu'
         ];
     }
 }

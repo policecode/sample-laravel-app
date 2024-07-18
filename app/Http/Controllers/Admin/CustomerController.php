@@ -8,6 +8,8 @@ use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
@@ -19,6 +21,7 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
+        // DB::enableQueryLog();
         $query = Customer::filter($request);
         $res = [
             'page' => $query->getPageNumber(),
@@ -29,7 +32,9 @@ class CustomerController extends Controller
         }else{
             $res['records'] = $query->get();
         }
-
+        // echo '<pre>';
+        // print_r(DB::getQueryLog());
+        // echo '</pre>';
         return response()->json($res);
     }
 
@@ -47,7 +52,8 @@ class CustomerController extends Controller
             $customer = Customer::create($data);
             return response()->json([
                 'result' => 1,
-                'data' => $customer
+                'data' => $customer,
+                'message' => 'Create success'
             ]);
         } catch (\Exception $e) {
             return response()->json(['result' => 0, 'message' => $e->getMessage()], 400);
@@ -72,7 +78,8 @@ class CustomerController extends Controller
             $customer = Customer::insert($dataInsert);
             return response()->json([
                 'result' => 1,
-                'data' => $customer
+                'data' => $customer,
+                'message' => 'Create success'
             ]);
         } catch (\Exception $e) {
             return response()->json(['result' => 0, 'message' => $e->getMessage()], 400);
@@ -86,7 +93,7 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        //
+        return response()->json($customer);
     }
 
     /**
@@ -98,7 +105,12 @@ class CustomerController extends Controller
      */
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
-        //
+        $data = $request->validated();
+        $result = $customer->update($data);
+        return response()->json([
+            'result' => $result,
+            'message' => 'Update success'
+        ]);
     }
 
     /**
@@ -109,6 +121,10 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        //
+        $result = $customer->delete();
+        return response()->json([
+            'result' => $result,
+            'message' => 'Delete success'
+        ]);
     }
 }

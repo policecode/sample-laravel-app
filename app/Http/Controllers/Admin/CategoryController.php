@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
-
+use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     /**
@@ -14,9 +14,20 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return 'Nguyễn Hoàng Đạt';
+        $query = Category::filter($request);
+        $res = [
+            'page' => $query->getPageNumber(),
+            'per_page' => $query->getPerPage(),
+        ];
+        if($request->is_paginate){
+            $res['total_records'] = $query->getTotal();
+        }else{
+            $res['records'] = $query->get();
+        }
+
+        return response()->json($res);
     }
 
     /**
@@ -47,7 +58,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        
+        return response()->json($category);
     }
 
     /**
@@ -59,7 +70,12 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        $data = $request->validated();
+        $result = $category->update($data);
+        return response()->json([
+            'result' => $result,
+            'message' => 'Update success'
+        ]);
     }
 
     /**
@@ -70,6 +86,10 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $result = $category->delete();
+        return response()->json([
+            'result' => $result,
+            'message' => 'Delete success'
+        ]);
     }
 }

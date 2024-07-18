@@ -19,7 +19,7 @@ class CreateCustomersTable extends Migration
                 $table->string('name', 150);
                 $table->enum('gender', ['male', 'female', 'unknown']);
                 $table->string('country', 30);
-                $table->timestamp('birthday');
+                $table->date('birthday');
                 $table->string('passport', 50)->unique();
                 $table->text('passport_expiration')->nullable();
                 $table->text('album')->nullable();
